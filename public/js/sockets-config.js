@@ -48,9 +48,9 @@ function ConnectSocketIO()
     socket = io.connect(IP);
     //var socket = io.connect('http://localhost:3000');
 
-    socket.on("balota", function(resp){
-        console.log(resp);
-    });
+    // socket.on("balota", function(resp){
+    //     console.log(resp);
+    // });
 
     socket.on('OnReceiveData', function (data)
     {

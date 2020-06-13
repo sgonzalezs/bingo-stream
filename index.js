@@ -36,7 +36,7 @@ io.on('connection', function (socket){
     });
 
     socket.on("balota", function(data){
-        console.log(data);
+        socket.emit("balota", data);
     });
 
     socket.on('OnReceiveData', function (data){
