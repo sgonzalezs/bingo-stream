@@ -1,6 +1,11 @@
 var express = require('express');
 var app = express();
+const path = require('path');
 app.use(express.static(__dirname + '/public'));
+
+app.get("/bingo", (req,res)=>{
+    res.sendFile(__dirname+'/Bingo/index.html');
+});
 
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
@@ -9,9 +14,11 @@ http.listen(port, function(){ console.log('listening on *:3000');});
 
 var serverID = 'undefined';
 io.on('connection', function (socket){
-    console.log('a user connected: ' + socket.id + " (server: " + serverID + " )");
+    // console.log(socket);
+    // console.log('a user connected: ' + socket.id + " (server: " + serverID + " )");
     //register the server id, received the command from unity
     socket.on('RegServerId', function (data){
+        console.log(data);
         serverID = socket.id;
         console.log('reg server id : ' + serverID);
     });
@@ -28,7 +35,14 @@ io.on('connection', function (socket){
         }
     });
 
+    socket.on("balota", function(data){
+        console.log(data);
+    });
+
     socket.on('OnReceiveData', function (data){
+        
+        // socket.emit()    
+
         if (serverID != 'undefined')
         {
             switch(data.EmitType)
@@ -46,4 +60,8 @@ io.on('connection', function (socket){
             console.log('cannot find any active server');
         }
     });
+
+    // socket.on('enviarMensaje', (data)=>{
+    //     console.log(data);
+    // });
 });

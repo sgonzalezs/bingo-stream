@@ -4,302 +4,143 @@
     <title>FMETP STREAM: SocketIO Demo</title>
     <script src="/socket.io/socket.io.js"></script>
     <script src="lib/gunzip.min.js"></script>
-    <style>
-        table
-        {
-            padding:4px;
-            height:15px;
-            border:2px solid black;
-            border-radius:10px;
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style type="text/css">
+    
+        .box{
+            width: 100%;
+            padding: 20px;
+            border: 1px solid;
+            margin: 10px;
         }
-        td
-        {
-            height:20px;
+
+        .main_row td:first-child{
+            font-weight: bold;
+            font-size: 25px;
+            text-align: center;
         }
-        body
-        {
-          text-align:left;
+        td.main_number p{
+            background: #ffffff;
+            font-size: 13px;
+            padding: 1px 3px;
+            border-radius: 100px;
+            margin: auto;
+            text-align: center;
+            margin-left: 3px; 
         }
+
+        .main_title{
+            background: yellow; 
+            width:60%; 
+            text-align: center; 
+            font-weight: bold;
+            margin: auto;
+            border-radius: 50px;
+            color:#ff3385;
+        }
+
+        #my_table{
+            width: 100%;
+            border: 1px solid;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        #my_table thead{
+            font-size: 40px;
+        }
+
     </style>
 </head>
 <body>
-    <h2 style="text-align:center"> FMETP STREAM: FM WebSocket (Demo Receiver)</h2>
-    <table style="width:100%;">
-        <tr>
-            <th><span id="StatusTextConnection">Status: no connection</span></th>
-            <th>IP Address <input type="text" id="IpAddress" value="http://localhost:3000"></th>
-            <th><button onclick="ConnectSocketIO()"><Strong>Connect</Strong></button></th>
-        </tr>
-        <tr>
-            <th><button onclick="FMEmitStringToAll('AAA')"><Strong>"A" To All</Strong></button></th>
-            <th><button onclick="FMEmitStringToServer('BBB')"><Strong>"B" To Server</Strong></button></th>
-            <th><button onclick="FMEmitStringToOthers('CCC')"><Strong>"C" To Others</Strong></button></th>
-        </tr>
-        <tr>
-            <th><button onclick=FMEmitByteToAll(3)><Strong>byte[3] To All</Strong></button></th>
-            <th><button onclick=FMEmitByteToServer(4)><Strong>byte[4] To Server</Strong></button></th>
-            <th><button onclick=FMEmitByteToOthers(5)><Strong>byte[5] To Others</Strong></button></th>
-        </tr>
-        <tr>
-            <th><span>Received Data: </span></th>
-            <th><span id="StatusTextString">(string) null</span></th>
-            <th><span id="StatusTextBytes">(byte) null</span></th>
-        </tr>
-        <tr>
-            <th>Video Label <input type="text" id="LabelVideo" value="1001"></th>
-            <th><span id="StatusTextVideoInfo">info: null</span></th>
-            <th><span id="StatusTextVideo">(kB) </span></th>
-        </tr>
-        <tr>
-            <th>Audio Label <input type="text" id="LabelAudio" value="2001"></th>
-            <th><span id="StatusTextAudioInfo">info: null</span></th>
-            <th><span id="StatusTextAudio">(kB) </span></th>
-        </tr>
-    </table>
-    </br>
+    
+    <section class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4 mt-4">
+                <span id="StatusTextConnection">Status: no connection</span>
+                <div class="input-group mb-3">
+                    <input type="text" id="IpAddress" class="form-control" placeholder="type the IP">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick="ConnectSocketIO()">Connect</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="col-md-12 box">
+                        <img id="DisplayImg" src="" width=100% />
+                    </div>
+                    <div class="col-md-12 box table_main" style="background: #ff3385;">
+                            
+                        <table>
+                            <p class="main_title">Revisa aqui las balotas jugadas</p>
+                            
+                            <tr id="main_b" class="main_row">
+                                <td>B</td>
+                            </tr>
+                            <tr id="main_i" class="main_row">
+                                <td>I</td>
+                            </tr>
+                            <tr id="main_n" class="main_row">
+                                <td>N</td>
+                            </tr>
+                            <tr id="main_g" class="main_row">
+                                <td>G</td>
+                            </tr>
+                            <tr id="main_o" class="main_row">
+                                <td>O</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <table id="my_table" class="box">
+                    <thead>
+                        <tr>
+                            <th>B</th>
+                            <th>I</th>
+                            <th>N</th>
+                            <th>G</th>
+                            <th>O</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <ul class="list-group" id="b"></ul>
+                            </td>
+                            <td>
+                                <ul class="list-group" id="i"></ul>
+                            </td>
+                            <td>
+                                <ul class="list-group" id="n"></ul>
+                            </td>
+                            <td>
+                                <ul class="list-group" id="g"></ul>
+                            </td>
+                            <td>
+                                <ul class="list-group" id="o"></ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-2">
+                <div class="box">
+                    user info
+                    
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <img id="DisplayImg" src="" width=100% />
-
-    <canvas id="canvas" />
-    <script type="text/javascript">
-        var label_img = 1001;
-        var dataID_img = 0;
-        var dataLength_img = 0;
-        var receivedLength_img = 0;
-        var dataByte_img = new Uint8Array(0);
-        var ReadyToGetFrame_img = true;
-
-        var label_aud = 2001;
-        var dataID_aud = 0;
-        var dataLength_aud = 0;
-        var receivedLength_aud = 0;
-        var dataByte_aud = new Uint8Array(100);
-        var ReadyToGetFrame_aud = true;
-        var SourceSampleRate = 44100;
-        var SourceChannels = 1;
-        var ABuffer = new Float32Array(0);
-
-        var socket;
-        function ConnectSocketIO()
-        {
-            var IP = document.getElementById("IpAddress").value;
-            socket = io.connect(IP);
-            //var socket = io.connect('http://localhost:3000');
-
-            socket.on('OnReceiveData', function (data)
-            {
-                document.getElementById("StatusTextConnection").innerHTML = "Status: " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
-
-                if(data.DataByte.length > 0) document.getElementById("StatusTextBytes").innerHTML = "(byte)" + data.DataByte.length;
-                if(data.DataString.length > 0)document.getElementById("StatusTextString").innerHTML = "(string)" + data.DataString;
-
-                label_img = document.getElementById("LabelVideo").value;
-                label_aud = document.getElementById("LabelAudio").value;
-
-                var _byteData = new Uint8Array(data.DataByte);
-                var _label = ByteToInt32(_byteData, 0);
-
-                if (_label == label_img) {
-                    var _dataID = ByteToInt32(_byteData, 4);
-                    if (_dataID != dataID_img) receivedLength_img = 0;
-
-                    dataID_img = _dataID;
-                    dataLength_img = ByteToInt32(_byteData, 8);
-                    //var _offset = ByteToInt32(_byteData, 12);
-                    var _GZipMode = (_byteData[16] == 1) ? true : false;
-
-                    if (receivedLength_img == 0) dataByte_img = new Uint8Array(0);
-                    receivedLength_img += _byteData.length - 17;
-
-                    //----------------add byte----------------
-                    dataByte_img = CombineInt8Array(dataByte_img, _byteData.slice(17, _byteData.length));
-                    //----------------add byte----------------
-
-                    if (ReadyToGetFrame_img)
-                    {
-                        if (receivedLength_img == dataLength_img) ProcessImageData(dataByte_img, _GZipMode);
-                    }
-                }
-
-                if (_label == label_aud)
-                {
-                    var _dataID = ByteToInt32(_byteData, 4);
-                    if (_dataID != dataID_aud) receivedLength_aud = 0;
-
-                    dataID_aud = _dataID;
-                    dataLength_aud = ByteToInt32(_byteData, 8);
-                    //var _offset = ByteToInt32(_byteData, 12);
-                    var _GZipMode = (_byteData[16] == 1) ? true : false;
-
-                    if (receivedLength_aud == 0) dataByte_aud = new Uint8Array(0);
-                    receivedLength_aud += _byteData.length - 17;
-                    //----------------add byte----------------
-                    dataByte_aud = CombineInt8Array(dataByte_aud, _byteData.slice(17, _byteData.length));
-                    //----------------add byte----------------
-                    if (ReadyToGetFrame_aud)
-                    {
-                        if (receivedLength_aud == dataLength_aud) ProcessAudioData(dataByte_aud, _GZipMode);
-                    }
-                }
-            });
-
-
-            var startTime = 0;
-            var audioCtx = new AudioContext();
-
-            function ProcessAudioData(_byte, _GZipMode) {
-                ReadyToGetFrame_aud = false;
-
-                var bytes = new Uint8Array(_byte);
-                if(_GZipMode)
-                {
-                   var gunzip = new Zlib.Gunzip (bytes);
-                   bytes = gunzip.decompress();
-                }
-
-                //read meta data
-                SourceSampleRate = ByteToInt32(bytes, 0);
-                SourceChannels = ByteToInt32(bytes, 4);
-
-                //conver byte[] to float
-                var BufferData = bytes.slice(8, bytes.length);
-                AudioFloat = new Float32Array(BufferData.buffer);
-
-                //=====================playback=====================
-                if(AudioFloat.length > 0) StreamAudio(SourceChannels, AudioFloat.length, SourceSampleRate, AudioFloat);
-                //=====================playback=====================
-
-                ReadyToGetFrame_aud = true;
-                document.getElementById("StatusTextAudioInfo").innerHTML = "info: " + SourceChannels + "x" + SourceSampleRate + " | " + (_GZipMode ? ("Zip("+Math.round((_byte.length/bytes.length) * 100) + "%)") : "Raw");
-                document.getElementById("StatusTextAudio").innerHTML = "(kB)" + Math.round(_byte.length/1000);
-            }
-
-            function StreamAudio(NUM_CHANNELS, NUM_SAMPLES, SAMPLE_RATE, AUDIO_CHUNKS)
-            {
-                var audioBuffer = audioCtx.createBuffer(NUM_CHANNELS, (NUM_SAMPLES / NUM_CHANNELS), SAMPLE_RATE);
-                for (var channel = 0; channel < NUM_CHANNELS; channel++)
-                {
-                    // This gives us the actual ArrayBuffer that contains the data
-                    var nowBuffering = audioBuffer.getChannelData(channel);
-                    for (var i = 0; i < NUM_SAMPLES; i++)
-                    {
-                        var order = i * NUM_CHANNELS + channel;
-                        nowBuffering[i] = AUDIO_CHUNKS[order];
-                    }
-                }
-
-                var source = audioCtx.createBufferSource();
-                source.buffer = audioBuffer;
-
-                source.connect(audioCtx.destination);
-                source.start(startTime);
-
-                startTime += audioBuffer.duration;
-            }
-
-            function ProcessImageData(_byte, _GZipMode)
-            {
-                ReadyToGetFrame_img = false;
-
-                var binary = '';
-
-                var bytes = new Uint8Array(_byte);
-                if(_GZipMode)
-                {
-                    var gunzip = new Zlib.Gunzip (bytes);
-                    bytes = gunzip.decompress();
-                }
-
-                //----conver byte[] to Base64 string----
-                var len = bytes.byteLength;
-                for (var i = 0; i < len; i++)
-                {
-                    binary += String.fromCharCode(bytes[i]);
-                }
-                //----conver byte[] to Base64 string----
-
-                //----display image----
-                var img = document.getElementById('DisplayImg');
-                img.src = 'data:image/jpeg;base64,' + btoa(binary);
-                //img.width = data.Width;
-                //img.height = data.Height;
-                //----display image----
-
-                ReadyToGetFrame_img = true;
-
-                document.getElementById("StatusTextVideoInfo").innerHTML = "info: " + img.width + "x" + img.height + " | " + (_GZipMode ? ("Zip("+Math.round((_byte.length/bytes.length) * 100) + "%)") : "Raw");
-                document.getElementById("StatusTextVideo").innerHTML = "(kB)" + Math.round(_byte.length/1000);
-            }
-
-            function CombineInt8Array(a, b)
-            {
-                var c = new Int8Array(a.length + b.length);
-                c.set(a);
-                c.set(b, a.length);
-                return c;
-            }
-            function CombineFloat32Array(a, b)
-            {
-                var c = new Float32Array(a.length + b.length);
-                c.set(a);
-                c.set(b, a.length);
-                return c;
-            }
-
-            function ByteToInt32(_byte, _offset)
-            {
-                return (_byte[_offset] & 255) + ((_byte[_offset + 1] & 255) << 8) + ((_byte[_offset + 2] & 255) << 16) + ((_byte[_offset + 3] & 255) << 24);
-                //return _byte[_offset] + _byte[_offset + 1] * 256 + _byte[_offset + 2] * 256 * 256 + _byte[_offset + 3] * 256 * 256 * 256;
-            }
-
-
-        }
-
-        function FMEmitStringToAll(_string)
-        {
-            var _DataString = _string;
-            var _DataByteArray = new Array(1);
-            _DataByteArray[0] = 0;
-            socket.emit('OnReceiveData', { EmitType: 0, DataString: _DataString, DataByte: _DataByteArray});
-        }
-        function FMEmitStringToServer(_string)
-        {
-          var _DataString = _string;
-          var _DataByteArray = new Array(1);
-          _DataByteArray[0] = 0;
-          socket.emit('OnReceiveData', { EmitType: 1, DataString: _DataString, DataByte: _DataByteArray});
-        }
-        function FMEmitStringToOthers(_string)
-        {
-          var _DataString = _string;
-          var _DataByteArray = new Array(1);
-          _DataByteArray[0] = 0;
-          socket.emit('OnReceiveData', { EmitType: 2, DataString: _DataString, DataByte: _DataByteArray});
-        }
-
-        function FMEmitByteToAll(_DataByteLength)
-        {
-            var _DataString = ' ';
-            var _DataByteArray = new Array(_DataByteLength);
-            for(var i = 0; i< _DataByteLength; i++) _DataByteArray[i] = 0;
-            socket.emit('OnReceiveData', { EmitType: 0, DataString: _DataString, DataByte: _DataByteArray});
-        }
-        function FMEmitByteToServer(_DataByteLength)
-        {
-            var _DataString = ' ';
-            var _DataByteArray = new Array(_DataByteLength);
-            for(var i = 0; i< _DataByteLength; i++) _DataByteArray[i] = 0;
-            socket.emit('OnReceiveData', { EmitType: 1, DataString: _DataString, DataByte: _DataByteArray});
-        }
-        function FMEmitByteToOthers(_DataByteLength)
-        {
-            var _DataString = ' ';
-            var _DataByteArray = new Array(_DataByteLength);
-            for(var i = 0; i< _DataByteLength; i++) _DataByteArray[i] = 0;
-            socket.emit('OnReceiveData', { EmitType: 2, DataString: _DataString, DataByte: _DataByteArray});
-        }
-
-      </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./js/sockets-config.js"></script>
+    <script type="text/javascript" src="./js/app.js"></script>
+    <script type="text/javascript"></script>
 
 </body>
 </html>
