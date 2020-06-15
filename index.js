@@ -15,10 +15,10 @@ http.listen(port, function(){ console.log('listening on *:3000');});
 var serverID = 'undefined';
 io.on('connection', function (socket){
     // console.log(socket);
-    // console.log('a user connected: ' + socket.id + " (server: " + serverID + " )");
+    console.log('a user connected: ' + socket.id + " (server: " + serverID + " )");
     //register the server id, received the command from unity
     socket.on('RegServerId', function (data){
-        console.log(data);
+        // console.log(data);
         serverID = socket.id;
         console.log('reg server id : ' + serverID);
     });
@@ -35,8 +35,9 @@ io.on('connection', function (socket){
         }
     });
 
-    socket.on("balota", function(data){
-        socket.emit("balota", data);
+    socket.on('balota', function(data){
+        console.log(data);
+        io.emit("new_balota", data);
     });
 
     socket.on('OnReceiveData', function (data){

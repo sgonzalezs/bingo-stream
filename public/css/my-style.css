@@ -1,0 +1,77 @@
+
+/*Tabla principal*/
+.table_main{
+    background: #ff3386;
+    min-width: 380px;
+    padding: 5px;
+
+}
+
+.main_row td:first-child{
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+}
+
+td.main_number p{
+    background: #ffffff;
+    font-size: 11px;
+    padding: 1px 3px;
+    border-radius: 100px;
+    margin: auto;
+    text-align: center;
+    margin-left: 3px; 
+}
+
+.main_title{
+    background: yellow; 
+    width:60%; 
+    text-align: center; 
+    font-weight: bold;
+    margin: auto;
+    font-size: 15px;
+    border-radius: 50px;
+    color:#ff3386;
+}
+
+/*Fin tabla principal*/
+
+/*Tabla Personal*/
+
+#my_table{
+    text-align: center;
+    font-size: 10px;
+    background:linear-gradient(90deg, #ffb84d, #ffb84d 50%, #ff9900 50%, #ff9900);
+    width: 100%;
+}
+
+#my_table tbody{
+    margin: 20px;
+}
+
+#my_table tbody tr td ul{
+    list-style: none;
+    margin: 10px 10px 10px 10px;
+}
+
+#my_table tbody tr td ul li.item p{
+    padding: 5px;
+    font-size: 25px;
+    margin: 10px 10px 10px 10px;
+    font-family: Impact, Charcoal, sans-serif;
+    background: #ffffff;
+}
+
+
+#my_table thead tr th{
+    font-size: 50px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/*Fin tabla personal*/
+
+.user-info{
+    font-size: 15px;
+    color: #696969;
+}

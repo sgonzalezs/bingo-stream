@@ -21,27 +21,6 @@ var ABuffer = new Float32Array(0);
 
 var socket;
 
-function connectBingo(){
-    socket=io();
-
-    socket.on("connect", function(){
-        console.log("connected to server from client");
-    });
-
-    socket.on("disconnect", function(){
-        // console.log("disconnected ");
-    });
-
-    socket.on("balota", function(data){
-        console.log(data);
-    });
-
-    // socket.emit("enviarMensaje", {
-    //     user:"thiago",
-    //     message:"new bingo"
-    // });
-}
-
 function ConnectSocketIO()
 {
     var IP = document.getElementById("IpAddress").value;
@@ -51,6 +30,10 @@ function ConnectSocketIO()
     // socket.on("balota", function(resp){
     //     console.log(resp);
     // });
+
+    socket.on('balota', function(resp){
+        console.log(resp);
+    });
 
     socket.on('OnReceiveData', function (data)
     {
