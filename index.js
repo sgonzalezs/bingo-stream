@@ -13,8 +13,12 @@ let port = process.env.PORT || 3000;
 http.listen(port, function(){ console.log('listening on *:3000');});
 
 var serverID = 'undefined';
+var users=[];
 io.on('connection', function (socket){
-    // console.log(socket);
+
+    io.emit("updateTable", users);
+    // console.log(users);
+
     console.log('a user connected: ' + socket.id + " (server: " + serverID + " )");
     //register the server id, received the command from unity
     socket.on('RegServerId', function (data){
@@ -36,7 +40,8 @@ io.on('connection', function (socket){
     });
 
     socket.on('balota', function(data){
-        console.log(data);
+        // console.log(data);
+        users.push(data);
         io.emit("new_balota", data);
     });
 
@@ -61,8 +66,4 @@ io.on('connection', function (socket){
             console.log('cannot find any active server');
         }
     });
-
-    // socket.on('enviarMensaje', (data)=>{
-    //     console.log(data);
-    // });
 });

@@ -26,14 +26,37 @@ function ConnectSocketIO()
     var IP = document.getElementById("IpAddress").value;
     socket = io.connect(IP);
     //var socket = io.connect('http://localhost:3000');
+    socket.on("updateTable", function(request){
 
-    // socket.on("balota", function(resp){
-    //     console.log(resp);
-    // });
+            request.forEach((e, i)=>{
+                
+                var new_data=JSON.parse(e.DataString);
+                $("#main_"+new_data["letter"].toLowerCase()).each(function(){
+                    let ballNum=$(this).find("td");
+                    for(var i=1; i<=15; i++){
+                        if(ballNum.filter(`:eq(${i})`).find("p").text()==new_data["number"]){
+                            ballNum.filter(`:eq(${i})`).find("p").css("background", "yellow");
+                        }
+                    }
+                });
 
-    socket.on('balota', function(resp){
-        console.log(resp);
+            });
+        });
+
+     socket.on("new_balota", function(resp){
+
+        var data=JSON.parse(resp.DataString);
+        // console.log(data["letter"].toLowerCase());
+        $("#main_"+data["letter"].toLowerCase()).each(function(){
+            let ballNum=$(this).find("td");
+            for(var i=1; i<=15; i++){
+                if(ballNum.filter(`:eq(${i})`).find("p").text()==data["number"]){
+                    ballNum.filter(`:eq(${i})`).find("p").css("background", "yellow");
+                }
+            }
+        });
     });
+
 
     socket.on('OnReceiveData', function (data)
     {

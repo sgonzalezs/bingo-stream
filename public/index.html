@@ -10,13 +10,19 @@
 <body>
     
     <section class="container-fluid">
-        <div class="row">
-            <div class="col-md-4 offset-md-4 mt-4">
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <!-- <label>Balota en Juego: </label>
+                <div class="ballGame">
+                    <p>B-12</p>
+                </div> -->
+            </div>
+            <div class="col-md-4">
                 <span id="StatusTextConnection">Status: no connection</span>
                 <div class="input-group mb-3">
                     <input type="text" id="IpAddress" class="form-control" placeholder="type the IP">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" onclick="ConnectSocketIO()">Connect</button>
+                        <button class="btn btn-outline-secondary" type="button" onclick="ConnectSocketIO(); connectBingo()">Connect</button>
                     </div>
                 </div>
             </div>
@@ -88,6 +94,7 @@
             </div>
             <div class="col-md-2 user-info">
                 <p>Haz <b>clic</b> sobre el número en tu tarjetón cuando se cante la balota</p>
+                <!-- <button type="button" class="btn" onclick="">Bingo!</button> -->
             </div>
         </div>
     </section>

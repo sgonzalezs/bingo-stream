@@ -1,29 +1,29 @@
 $(document).ready(function(){
 	firstLoad();
 
-	var info = {
-    		state: "Active", 
-    		letter: "b", 
-    		number: 1
-    	};
+	// var info = {
+ //    		state: "Active", 
+ //    		letter: "I".toLowerCase(), 
+ //    		number: 23
+ //    	};
 
-    	$("#main_"+info["letter"]).each(function(){
-    		let ballNum=$(this).find("td");
-    		for(var i=1; i<=15; i++){
-				if(ballNum.filter(`:eq(${i})`).find("p").text()==info["number"]){
-					ballNum.filter(`:eq(${i})`).find("p").css("background", "yellow");
-				}
-    		}
-    	});
+    // 	$("#main_"+info["letter"]).each(function(){
+    // 		let ballNum=$(this).find("td");
+    // 		for(var i=1; i<=15; i++){
+				// if(ballNum.filter(`:eq(${i})`).find("p").text()==info["number"]){
+				// 	ballNum.filter(`:eq(${i})`).find("p").css("background", "yellow");
+				// }
+    // 		}
+    // 	});
 
-    	$("#rowTable td ul#"+info["letter"]).each(function(){
-    		let number=$(this).find("li");
-    		for(var i=0; i<=5; i++){
-    			if(number.filter(`:eq(${i})`).find("p").text()==info["number"]){
-    				number.filter(`:eq(${i})`).find("p").css("background", "#ff3386");
-    			}
-    		}
-    	});
+    // 	$("#rowTable td ul#"+info["letter"]).each(function(){
+    // 		let number=$(this).find("li");
+    // 		for(var i=0; i<=5; i++){
+    // 			if(number.filter(`:eq(${i})`).find("p").text()==info["number"]){
+    // 				number.filter(`:eq(${i})`).find("p").css("background", "#ff3386");
+    // 			}
+    // 		}
+    // 	});
 });
 
 function firstLoad(){
@@ -87,7 +87,7 @@ function firstLoad(){
 		var bolas = bola(letra, tablero);
 		var mano = bolas.slice(0,5);
 		tabla[letra] = mano;
-
+		
 		tabla[letra].forEach((e, i)=>{
 			$("#"+letra).append(`
 				<li class="item"><p >${e}</p></li>
@@ -107,36 +107,10 @@ function connectBingo(){
 	var socket;
     socket=io();
     socket.on("connect", function(){
-        // console.log("connected to server from client");
+    	console.log('conectado');
     });
 
     socket.on("disconnect", function(){
         // console.log("disconnected ");
-    });
-
-    socket.emit("enviarMensaje", {
-        user:"thiago",
-        message:"new bingo"
-    });
-
-    socket.on("new_balota", function(resp){
-    	
-    	var info = {
-    		state: "Active", 
-    		letter: "I", 
-    		number: 16
-    	};
-
-    	var data=JSON.parse(resp.DataString);
- 		// console.log(data);
-    	
-    	$("#main_"+info["letter"]).each(function(){
-    		let ballNum=$(this).find("td");
-    		for(var i=1; i<=15; i++){
-				if(ballNum.filter(`:eq(${i})`).find("p").text()==info["number"]){
-					ballNum.filter(`:eq(${i})`).find("p").css("background", "yellow");
-				}
-    		}
-    	});
     });
 }
