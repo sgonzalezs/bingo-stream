@@ -1,39 +1,26 @@
 $(document).ready(function(){
 	firstLoad();
-
-	// var info = {
- //    		state: "Active", 
- //    		letter: "I".toLowerCase(), 
- //    		number: 23
- //    	};
-
-    // 	$("#main_"+info["letter"]).each(function(){
-    // 		let ballNum=$(this).find("td");
-    // 		for(var i=1; i<=15; i++){
-				// if(ballNum.filter(`:eq(${i})`).find("p").text()==info["number"]){
-				// 	ballNum.filter(`:eq(${i})`).find("p").css("background", "yellow");
-				// }
-    // 		}
-    // 	});
-
-    // 	$("#rowTable td ul#"+info["letter"]).each(function(){
-    // 		let number=$(this).find("li");
-    // 		for(var i=0; i<=5; i++){
-    // 			if(number.filter(`:eq(${i})`).find("p").text()==info["number"]){
-    // 				number.filter(`:eq(${i})`).find("p").css("background", "#ff3386");
-    // 			}
-    // 		}
-    // 	});
 });
 
+var tablero = {
+	'b' : [],
+	'i' : [],
+	'n' : [],
+	'g' : [],
+	'o' : []
+};
+
+var tabla = {
+	'b' : [],
+	'i' : [],
+	'n' : [],
+	'g' : [],
+	'o' : [],
+	'checked':false
+};
+
+var ballots=[];
 function firstLoad(){
-	var tablero = {
-			'b' : [],
-			'i' : [],
-			'n' : [],
-			'g' : [],
-			'o' : []
-		};
 	for (var e = 0; e < 75; e++) {
 		if (e+1 <= 15) {
 			tablero.b.push(e+1);
@@ -47,14 +34,6 @@ function firstLoad(){
 			tablero.o.push(e+1);
 		}
 	}
-
-	var tabla = {
-		'b' : [],
-		'i' : [],
-		'n' : [],
-		'g' : [],
-		'o' : []
-	};
 
 	//generar tablero con los 75 numeros
 
@@ -87,11 +66,12 @@ function firstLoad(){
 		var bolas = bola(letra, tablero);
 		var mano = bolas.slice(0,5);
 		tabla[letra] = mano;
-		
+
 		tabla[letra].forEach((e, i)=>{
 			$("#"+letra).append(`
-				<li class="item"><p >${e}</p></li>
+				<li class="item" id="${letra}${e}")"><p >${e}</p></li>
 			`);
+			ballots.push({ballot:e, checked:false});
 		});
 
 		tablero[letra].sort(function(a, b){return a-b});
@@ -101,16 +81,68 @@ function firstLoad(){
 			`);
 		});
 	}
+
+	var letters=['b','i','n','g','o'];
+	
+	for(var i=0; i<letters.length; i++){
+		tabla[letters[i]].forEach((e,indx)=>{
+			
+			var checked=false;
+			$("#"+letters[i]+e+" p").click(function(){
+				if(!checked){
+					checked=true;
+					$(this).css("background", "#ff3386");
+					ballots.forEach((el, ind)=>{
+						if(el.ballot===e){
+							el.checked=true;
+						}
+					})
+				}else{
+					checked=false;
+					$(this).css("background", "#ffffff");
+					ballots.forEach((el, ind)=>{
+						if(el.ballot===e){
+							el.checked=false;
+						}
+					})
+				}
+			});
+		});
+	}
+
+}
+
+// var checked=false;
+// var ballots=[];
+// function getNumber(letter, num){
+
+// }
+
+var tablewin=[];
+function bingoWin(){
+
+	tablewin=[];
+	ballots.forEach((e, i)=>{
+		if(e.checked==true){
+			tablewin.push(ballots[i]);
+		}
+	});
+	// console.log(tablewin.length);
+	if(tablewin.length==25){
+		// console.log(tablewin);
+		tablewin=[];
+	}else{
+		console.log("Debes marcar todas las balotas");
+	}
+
 }
 
 function connectBingo(){
 	var socket;
     socket=io();
     socket.on("connect", function(){
-    	console.log('conectado');
     });
 
     socket.on("disconnect", function(){
-        // console.log("disconnected ");
     });
 }

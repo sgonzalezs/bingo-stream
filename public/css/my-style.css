@@ -62,6 +62,10 @@ td.main_number p{
     background: #ffffff;
 }
 
+#my_table tbody tr td ul li.item:hover{
+    cursor: pointer;
+}
+
 
 #my_table thead tr th{
     font-size: 50px;
@@ -76,9 +80,6 @@ td.main_number p{
     color: #696969;
 }
 
-.user-info button{
-    background: #ff3386;
-}
 
 /*Balota*/
 
