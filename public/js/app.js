@@ -1,5 +1,6 @@
 $(document).ready(function(){
 	firstLoad();
+	// $(".btn-success").css("display", "none");
 });
 
 var tablero = {
@@ -18,6 +19,16 @@ var tabla = {
 	'o' : [],
 	'checked':false
 };
+
+var socket;
+socket=io();
+socket.on("connect", function(){
+	// console.log("connectedddd");
+});
+
+socket.on("disconnect", function(){
+	// console.log("disconnectedddd");
+});
 
 var ballots=[];
 function firstLoad(){
@@ -129,20 +140,10 @@ function bingoWin(){
 	});
 	// console.log(tablewin.length);
 	if(tablewin.length==25){
-		// console.log(tablewin);
+		socket.emit("bingoWin", tablewin);
 		tablewin=[];
 	}else{
-		console.log("Debes marcar todas las balotas");
+		alert("Aun no has marcado todas las balotas");
 	}
 
-}
-
-function connectBingo(){
-	var socket;
-    socket=io();
-    socket.on("connect", function(){
-    });
-
-    socket.on("disconnect", function(){
-    });
 }

@@ -24,6 +24,7 @@ io.on('connection', function (socket){
     socket.on('RegServerId', function (data){
         // console.log(data);
         serverID = socket.id;
+        users=[];
         console.log('reg server id : ' + serverID);
     });
 
@@ -43,6 +44,12 @@ io.on('connection', function (socket){
         // console.log(data);
         users.push(data);
         io.emit("new_balota", data);
+    });
+
+    socket.on("bingoWin", (data)=>{
+
+        // io.emit("bingoWinner", data);
+        io.emit("OnReceiveData", {DataString: JSON.stringify(data)});
     });
 
     socket.on('OnReceiveData', function (data){

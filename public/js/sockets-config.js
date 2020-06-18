@@ -1,6 +1,4 @@
-$(document).ready(function(){
-    connectBingo();
-});
+
 
 var label_img = 1001;
 var dataID_img = 0;
@@ -57,6 +55,10 @@ function ConnectSocketIO()
         });
     });
 
+    socket.on("bingoWinner", function(data){
+        console.log(data);
+        socket.emit("OnReceiveData", data);    
+     });
 
     socket.on('OnReceiveData', function (data)
     {
