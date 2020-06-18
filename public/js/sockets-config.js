@@ -1,4 +1,7 @@
 
+$(document).ready(function(){
+    ConnectSocketIO();
+});
 
 var label_img = 1001;
 var dataID_img = 0;
@@ -21,7 +24,8 @@ var socket;
 
 function ConnectSocketIO()
 {
-    var IP = document.getElementById("IpAddress").value;
+    // var IP = document.getElementById("IpAddress").value;
+    var IP = "https://bingo-stream.herokuapp.com/";
     socket = io.connect(IP);
     //var socket = io.connect('http://localhost:3000');
     socket.on("updateTable", function(request){
@@ -62,7 +66,7 @@ function ConnectSocketIO()
 
     socket.on('OnReceiveData', function (data)
     {
-        document.getElementById("StatusTextConnection").innerHTML = "Status: " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+        // document.getElementById("StatusTextConnection").innerHTML = "Status: " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
         // console.log(data);
         // if(data.DataByte.length > 0) document.getElementById("StatusTextBytes").innerHTML = "(byte)" + data.DataByte.length;
         // if(data.DataString.length > 0)document.getElementById("StatusTextString").innerHTML = "(string)" + data.DataString;

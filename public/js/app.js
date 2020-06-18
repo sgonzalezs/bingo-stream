@@ -29,12 +29,15 @@ var tablewin=[];
 
 var socket;
 socket=io();
-socket.on("connect", function(){
-	// console.log("connectedddd");
-});
 
-socket.on("disconnect", function(){
-	// console.log("disconnectedddd");
+socket.on("errConn", function(req){
+	// console.log(req);
+	if(!req.conn){
+		$("#loaderModal").modal({show:true});
+		// window.location="index.html";
+	}else{
+		$("#loaderModal").modal({show:false});
+	}
 });
 
 var ballots=[];
