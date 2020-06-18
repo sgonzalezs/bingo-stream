@@ -150,5 +150,4 @@ function bingoWin(){
 	tablewin=[];
 	swal("Bingo! Tu tabla será revisada en breve");
 	$(".btn-success").attr("disabled", true);
-	$("#rowTable").attr("disabled", true);
 }
