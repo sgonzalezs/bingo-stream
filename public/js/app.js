@@ -1,7 +1,12 @@
 $(document).ready(function(){
 	firstLoad();
-	// $(".btn-success").css("display", "none");
 });
+var params = new URLSearchParams(window.location.search);
+
+if (!params.has('nombre')) {
+    window.location = 'index.html';
+    alert("Debes validar el usuario");
+}
 
 var tablero = {
 	'b' : [],
@@ -19,6 +24,8 @@ var tabla = {
 	'o' : [],
 	'checked':false
 };
+
+var tablewin=[];
 
 var socket;
 socket=io();
@@ -117,33 +124,31 @@ function firstLoad(){
 						}
 					})
 				}
+
+				tablewin=[{userName:params.get('nombre')}];
+				ballots.forEach((e, i)=>{
+					if(e.checked==true){
+						tablewin.push(ballots[i]);
+					}
+				});
+
+				if(tablewin.length==26){
+					$(".btn-success").css("display", "block");
+				}else{
+					$(".btn-success").css("display", "none");
+				}
+
 			});
 		});
 	}
 
 }
 
-// var checked=false;
-// var ballots=[];
-// function getNumber(letter, num){
-
-// }
-
-var tablewin=[];
 function bingoWin(){
 
+	socket.emit("bingoWin", tablewin);
 	tablewin=[];
-	ballots.forEach((e, i)=>{
-		if(e.checked==true){
-			tablewin.push(ballots[i]);
-		}
-	});
-	// console.log(tablewin.length);
-	if(tablewin.length==25){
-		socket.emit("bingoWin", tablewin);
-		tablewin=[];
-	}else{
-		alert("Aun no has marcado todas las balotas");
-	}
-
+	swal("Bingo! Tu tabla será revisada en breve");
+	$(".btn-success").attr("disabled", true);
+	$("#rowTable").attr("disabled", true);
 }

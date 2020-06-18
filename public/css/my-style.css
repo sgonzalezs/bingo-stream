@@ -90,3 +90,7 @@ td.main_number p{
     width: 60px;
     margin: auto;
 }
+
+.btn-success{
+    display: none;
+}
