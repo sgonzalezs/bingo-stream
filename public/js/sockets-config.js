@@ -28,22 +28,28 @@ function ConnectSocketIO()
     var IP = "https://bingo-stream.herokuapp.com/";
     socket = io.connect(IP);
     //var socket = io.connect('http://localhost:3000');
+    socket.on("errConn", function(data){
+        if(data.conn){
+            $("#loaderModal").modal("show");
+        }else{
+            $("#loaderModal").modal("hide");
+        }
+    });
+
     socket.on("updateTable", function(request){
-
-            request.forEach((e, i)=>{
-                
-                var new_data=JSON.parse(e.DataString);
-                $("#main_"+new_data["letter"].toLowerCase()).each(function(){
-                    let ballNum=$(this).find("td");
-                    for(var i=1; i<=15; i++){
-                        if(ballNum.filter(`:eq(${i})`).find("p").text()==new_data["number"]){
-                            ballNum.filter(`:eq(${i})`).find("p").css("background", "yellow");
-                        }
+        request.forEach((e, i)=>{
+            var new_data=JSON.parse(e.DataString);
+            $("#main_"+new_data["letter"].toLowerCase()).each(function(){
+                let ballNum=$(this).find("td");
+                for(var i=1; i<=15; i++){
+                    if(ballNum.filter(`:eq(${i})`).find("p").text()==new_data["number"]){
+                        ballNum.filter(`:eq(${i})`).find("p").css("background", "yellow");
                     }
-                });
-
+                }
             });
+
         });
+    });
 
      socket.on("new_balota", function(resp){
 
@@ -57,6 +63,10 @@ function ConnectSocketIO()
                 }
             }
         });
+    });
+
+    socket.on("playerWinner", function(data){
+        swal(data.DataString);
     });
 
     socket.on("bingoWinner", function(data){

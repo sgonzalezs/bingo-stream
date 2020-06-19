@@ -5,7 +5,7 @@ var params = new URLSearchParams(window.location.search);
 
 if (!params.has('nombre')) {
     window.location = 'index.html';
-    alert("Debes validar el usuario");
+    alert("Debes ingresar el usuario");
 }
 
 var tablero = {
@@ -30,15 +30,6 @@ var tablewin=[];
 var socket;
 socket=io();
 
-socket.on("errConn", function(req){
-	// console.log(req);
-	if(!req.conn){
-		$("#loaderModal").modal({show:true});
-		// window.location="index.html";
-	}else{
-		$("#loaderModal").modal({show:false});
-	}
-});
 
 var ballots=[];
 function firstLoad(){

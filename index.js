@@ -12,29 +12,36 @@ var io = require('socket.io')(http);
 let port = process.env.PORT || 3000;
 http.listen(port, function(){ console.log('listening on *:3000');});
 
-var serverID = undefined;
+var serverID = "undefined";
 var users=[];
+var userWin={ EmitType: 2, DataString: 'El ganador es User 1', DataByte: [ 0 ] };
 io.on('connection', function (socket){
 
-    if(!serverID){
-        socket.emit("errConn", {conn:false});
-    }
+    // io.emit("errConn", {conn:true});
 
     io.emit("updateTable", users);
     // console.log(users);
     console.log('a user connected: ' + socket.id + " (server: " + serverID + " )");
+
+    if(serverID=="undefined"){
+        io.emit("errConn", {conn:true});
+    }else{
+        io.emit("errConn", {conn:false});
+    }
     //register the server id, received the command from unity
     socket.on('RegServerId', function (data){
-        // console.log(data);
+        io.emit("errConn", {conn:false});
         serverID = socket.id;
         users=[];
         console.log('reg server id : ' + serverID);
     });
 
+
     socket.on('disconnect', function(){
+        io.emit("errConn", {conn:true});
         if (serverID == socket.id)
         {
-           serverID = 'undefined';
+           serverID = "undefined";
            console.log('removed Server: ' + socket.id);
         }
         else
@@ -55,9 +62,17 @@ io.on('connection', function (socket){
         io.emit("OnReceiveData", {DataString: JSON.stringify(data)});
     });
 
+    socket.on("winner", function(request){
+        io.emit("playerWinner", userWin);
+    });
+
     socket.on('OnReceiveData', function (data){
         
-        // socket.emit()    
+        if(serverID == "undefined"){
+            io.emit("errConn", {conn:true});
+        }else{
+            io.emit("errConn", {conn:false});
+        }    
 
         if (serverID != 'undefined')
         {
