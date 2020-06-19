@@ -65,7 +65,7 @@ io.on('connection', function (socket){
     });
 
     socket.on("winner", function(request){
-        io.emit("playerWinner", userWin);
+        io.emit("playerWinner", request);
     });
 
     socket.on('OnReceiveData', function (data){
