@@ -41,8 +41,10 @@ io.on('connection', function (socket){
         io.emit("errConn", {conn:true});
         if (serverID == socket.id)
         {
-           serverID = "undefined";
-           console.log('removed Server: ' + socket.id);
+            users=[];
+            io.emit("updateTable", users);
+            serverID = "undefined";
+            console.log('removed Server: ' + socket.id);
         }
         else
         {
