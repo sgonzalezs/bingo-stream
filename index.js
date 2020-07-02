@@ -14,7 +14,7 @@ http.listen(port, function(){ console.log('listening on *:3000');});
 
 var serverID = "undefined";
 var users=[];
-var userWin={ EmitType: 2, DataString: 'El ganador es User 1', DataByte: [ 0 ] };
+// var userWin={ EmitType: 2, DataString: 'El ganador es User 1', DataByte: [ 0 ] };
 io.on('connection', function (socket){
 
     // io.emit("errConn", {conn:true});
