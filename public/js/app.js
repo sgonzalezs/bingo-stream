@@ -34,6 +34,7 @@ socket=io();
 
 var ballots=[];
 function firstLoad(){
+
 	for (var e = 0; e < 75; e++) {
 		if (e+1 <= 15) {
 			tablero.b.push(e+1);
@@ -79,14 +80,17 @@ function firstLoad(){
 		var bolas = bola(letra, tablero);
 		var mano = bolas.slice(0,5);
 		tabla[letra] = mano;
-		// console.log(tabla);
+		// localStorage.removeItem('table');
+		if(localStorage.getItem('table')){
+			tabla=JSON.parse(localStorage.getItem('table'));
+		}
+
 		tabla[letra].forEach((e, i)=>{
 			$("#"+letra).append(`
 				<li class="item" id="${letra}${e}")"><p >${e}</p></li>
 			`);
 			ballots.push({ballot:e, checked:false});
 		});
-
 		tablero[letra].sort(function(a, b){return a-b});
 		tablero[letra].forEach((e, i)=>{
 			$("#main_"+letra).append(`
@@ -95,19 +99,32 @@ function firstLoad(){
 		});
 	}
 
+	if(!localStorage.getItem('table')){
+		localStorage.setItem('table', JSON.stringify(tabla));
+	}
+
 	var letters=['b','i','n','g','o'];
+
+	for(var i=0; i<letters.length; i++){
+
+	}
+	
 	var gameL=[];
+	var gameX=[];
 	for(var x=0;x<5;x++){
+		//game L
 		gameL.push({num:tabla[letters[0]][x], check:false});
 		gameL.push({num:tabla[letters[x]][4], check:false});
-		// if(currentItem===tabla[letters[0]][x] ||currentItem===tabla[letters[x]][4]){
-		// 	console.log(currentItem);
-		// }
+		
+		//game X
+		gameX.push({num:tabla[letters[x]][x]});
+		gameX.push({num:tabla[letters[4-x]][x]});
 	}
+
 	//ciclo ganador juego completo
 	for(var i=0; i<letters.length; i++){
+
 		tabla[letters[i]].forEach((e,indx)=>{
-			
 			var checked=false;
 			$("#"+letters[i]+e+" p").click(function(){
 				var currentItem=parseInt($(this).text());
@@ -115,6 +132,7 @@ function firstLoad(){
 				// console.log(gameL);
 
 				if(!checked){
+					//push juego principal
 					checked=true;
 					$(this).css("background", "#ff3386");
 					ballots.forEach((el, ind)=>{
@@ -122,10 +140,16 @@ function firstLoad(){
 							el.checked=true;
 						}
 					});
+					//push minijuego L
 					gameL.forEach((el, ind)=>{
 						if(el.num==e){
 							el.check=true;
-							// console.log(gameL);
+						}
+					});
+					//push minijuego X
+					gameX.forEach((el, ind)=>{
+						if(el.num==e){
+							el.check=true;
 						}
 					});
 				}else{
@@ -139,15 +163,27 @@ function firstLoad(){
 					gameL.forEach((el, ind)=>{
 						if(el.num==e){
 							el.check=false;
-							// console.log(gameL);
+						}
+					});
+					gameX.forEach((el, ind)=>{
+						if(el.num==e){
+							el.check=false;
 						}
 					});
 				}
 
+				//validate game L
 				l_tablewin=[{userName:params.get('nombre')}];
 				gameL.forEach((e, i)=>{
 					if(e.check==true){
 						l_tablewin.push(gameL[i]);
+					}
+				});
+				//validate game X
+				x_tablewin=[{userName:params.get('nombre')}];
+				gameX.forEach((e, i)=>{
+					if(e.check==true){
+						x_tablewin.push(gameX[i]);
 					}
 				});
 
@@ -157,11 +193,17 @@ function firstLoad(){
 						tablewin.push(ballots[i]);
 					}
 				});
-				// console.log(l_tablewin);
-				if(l_tablewin.length==11){
-					$(".btnMiniBingo").css("display", "block");
+
+				if(x_tablewin.length==11){
+					$(".btnMiniBingoX").css("display", "block");
 				}else{
-					$(".btnMiniBingo").css("display", "none");
+					$(".btnMiniBingoX").css("display", "none");
+				}
+
+				if(l_tablewin.length==11){
+					$(".btnMiniBingoL").css("display", "block");
+				}else{
+					$(".btnMiniBingoL").css("display", "none");
 				}
 
 				if(tablewin.length==26){
@@ -172,8 +214,6 @@ function firstLoad(){
 			});
 		});
 	}
-
-	//ciclo ganador minijuego L
 
 }
 
@@ -188,5 +228,11 @@ function bingoWin(){
 function MinibingoWin(){
 	console.log(l_tablewin);
 	l_tablewin=[];
+	swal("Mini Bingo!","Tu tabla será revisada en breve");
+}
+
+function MinibingoWinX(){
+	console.log(x_tablewin);
+	x_tablewin=[];
 	swal("Mini Bingo!","Tu tabla será revisada en breve");
 }
