@@ -22,10 +22,11 @@ var tabla = {
 	'n' : [],
 	'g' : [],
 	'o' : [],
-	'checked':false
 };
 
 var tablewin=[];
+var l_tablewin=[];
+var x_tablewin=[];
 
 var socket;
 socket=io();
@@ -78,7 +79,7 @@ function firstLoad(){
 		var bolas = bola(letra, tablero);
 		var mano = bolas.slice(0,5);
 		tabla[letra] = mano;
-
+		// console.log(tabla);
 		tabla[letra].forEach((e, i)=>{
 			$("#"+letra).append(`
 				<li class="item" id="${letra}${e}")"><p >${e}</p></li>
@@ -95,12 +96,24 @@ function firstLoad(){
 	}
 
 	var letters=['b','i','n','g','o'];
-	
+	var gameL=[];
+	for(var x=0;x<5;x++){
+		gameL.push({num:tabla[letters[0]][x], check:false});
+		gameL.push({num:tabla[letters[x]][4], check:false});
+		// if(currentItem===tabla[letters[0]][x] ||currentItem===tabla[letters[x]][4]){
+		// 	console.log(currentItem);
+		// }
+	}
+	//ciclo ganador juego completo
 	for(var i=0; i<letters.length; i++){
 		tabla[letters[i]].forEach((e,indx)=>{
 			
 			var checked=false;
 			$("#"+letters[i]+e+" p").click(function(){
+				var currentItem=parseInt($(this).text());
+
+				// console.log(gameL);
+
 				if(!checked){
 					checked=true;
 					$(this).css("background", "#ff3386");
@@ -108,7 +121,13 @@ function firstLoad(){
 						if(el.ballot===e){
 							el.checked=true;
 						}
-					})
+					});
+					gameL.forEach((el, ind)=>{
+						if(el.num==e){
+							el.check=true;
+							// console.log(gameL);
+						}
+					});
 				}else{
 					checked=false;
 					$(this).css("background", "#ffffff");
@@ -116,8 +135,21 @@ function firstLoad(){
 						if(el.ballot===e){
 							el.checked=false;
 						}
-					})
+					});
+					gameL.forEach((el, ind)=>{
+						if(el.num==e){
+							el.check=false;
+							// console.log(gameL);
+						}
+					});
 				}
+
+				l_tablewin=[{userName:params.get('nombre')}];
+				gameL.forEach((e, i)=>{
+					if(e.check==true){
+						l_tablewin.push(gameL[i]);
+					}
+				});
 
 				tablewin=[{userName:params.get('nombre')}];
 				ballots.forEach((e, i)=>{
@@ -125,16 +157,23 @@ function firstLoad(){
 						tablewin.push(ballots[i]);
 					}
 				});
-
-				if(tablewin.length==26){
-					$(".btn-success").css("display", "block");
+				// console.log(l_tablewin);
+				if(l_tablewin.length==11){
+					$(".btnMiniBingo").css("display", "block");
 				}else{
-					$(".btn-success").css("display", "none");
+					$(".btnMiniBingo").css("display", "none");
 				}
 
+				if(tablewin.length==26){
+					$(".btnBingo").css("display", "block");
+				}else{
+					$(".btnBingo").css("display", "none");
+				}
 			});
 		});
 	}
+
+	//ciclo ganador minijuego L
 
 }
 
@@ -144,4 +183,10 @@ function bingoWin(){
 	tablewin=[];
 	swal("Bingo! Tu tabla será revisada en breve");
 	$(".btn-success").attr("disabled", true);
+}
+
+function MinibingoWin(){
+	console.log(l_tablewin);
+	l_tablewin=[];
+	swal("Mini Bingo!","Tu tabla será revisada en breve");
 }
