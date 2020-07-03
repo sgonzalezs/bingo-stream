@@ -1,11 +1,16 @@
 $(document).ready(function(){
-	firstLoad();
+	firstLoad();  
+	
 });
+
+
 var params = new URLSearchParams(window.location.search);
 
 if (!params.has('nombre')) {
-    window.location = 'index.html';
     alert("Debes ingresar el usuario");
+    window.location = 'index.html';
+}else{
+	localStorage.setItem('user', params.get('nombre'));
 }
 
 var tablero = {
@@ -27,6 +32,7 @@ var tabla = {
 var tablewin=[];
 var l_tablewin=[];
 var x_tablewin=[];
+var t_tablewin=[];
 
 var socket;
 socket=io();
@@ -111,6 +117,7 @@ function firstLoad(){
 	
 	var gameL=[];
 	var gameX=[];
+	var gameT=[];
 	for(var x=0;x<5;x++){
 		//game L
 		gameL.push({num:tabla[letters[0]][x], check:false});
@@ -119,6 +126,9 @@ function firstLoad(){
 		//game X
 		gameX.push({num:tabla[letters[x]][x]});
 		gameX.push({num:tabla[letters[4-x]][x]});
+
+		gameT.push({num:tabla[letters[x]][0], check:false});
+		gameT.push({num:tabla[letters[2]][x], check:false});
 	}
 
 	//ciclo ganador juego completo
@@ -152,6 +162,12 @@ function firstLoad(){
 							el.check=true;
 						}
 					});
+					//push minijuego T
+					gameT.forEach((el, ind)=>{
+						if(el.num==e){
+							el.check=true;
+						}
+					});
 				}else{
 					checked=false;
 					$(this).css("background", "#ffffff");
@@ -166,6 +182,11 @@ function firstLoad(){
 						}
 					});
 					gameX.forEach((el, ind)=>{
+						if(el.num==e){
+							el.check=false;
+						}
+					});
+					gameT.forEach((el, ind)=>{
 						if(el.num==e){
 							el.check=false;
 						}
@@ -186,6 +207,13 @@ function firstLoad(){
 						x_tablewin.push(gameX[i]);
 					}
 				});
+				//validate game T
+				t_tablewin=[{userName:params.get('nombre')}];
+				gameT.forEach((e, i)=>{
+					if(e.check==true){
+						t_tablewin.push(gameT[i]);
+					}
+				});
 
 				tablewin=[{userName:params.get('nombre')}];
 				ballots.forEach((e, i)=>{
@@ -204,6 +232,12 @@ function firstLoad(){
 					$(".btnMiniBingoL").css("display", "block");
 				}else{
 					$(".btnMiniBingoL").css("display", "none");
+				}
+
+				if(t_tablewin.length==11){
+					$(".btnMiniBingoT").css("display", "block");
+				}else{
+					$(".btnMiniBingoT").css("display", "none");
 				}
 
 				if(tablewin.length==26){
