@@ -1,0 +1,14 @@
+.register{
+	padding: 40px;
+}
+
+.content{
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px -2px rgba(0,0,0,0.75);
+}
+
+.info{
+	padding: 40px;
+	color: #ffffff;
+	background: #ff3386
+}

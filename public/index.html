@@ -6,24 +6,48 @@
     
 	<title>Ingresar</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+	<link rel="stylesheet" type="text/css" href="./css/register.css">
 </head>
 <body>
 	<section class="container">
 		<section class="row mt-5">
-			<div class="col-md-4 m-auto">
-				<form action="bingo.html">
-					<div class="card">
-						<div class="card-header">
-							<h4 class="card-title m-auto text-center">Ingresa tu nombre</h4>
-						</div>
-						<div class="card-body">
-							<input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre" required="" />
-						</div>
-						<div class="card-body">
-							<button type="Submit" class="btn btn-primary btn-block">Ingresar</button>
-						</div>
+			<div class="col-md-10 m-auto content">
+				<div class="row">
+					<div class="info col-md-6" >
+						<p>
+							Registrate para ingresar al Bingo COMFAMA y participa por espectaculares premios.
+						</p>
 					</div>
-				</form>
+					<div class="register col-md-6">
+						<form action="bingo.html">
+							<div class="form-group">
+								<label for="nombre">Nombre Completo</label>
+								<input type="text" class="form-control" name="nombre" id="nombre" required="" />
+							</div>
+							<div class="form-group">
+								<label for="email">Correo</label>
+								<input type="email" class="form-control" name="email" id="email" required="" />
+							</div>
+							<div class="form-group">
+								<label for="slc_documento">Tipo de Documento</label>
+								<select id="slc_documento" name="slc_documento" class="form-control" required="">
+									<option value="">Seleccione --</option>
+									<option value="c.c.">Cédula de Ciudadanía</option>
+									<option value="t.i.">Tarjeta de Identidad</option>
+									<option value="c.e.">Cédula de Extranjería</option>
+									<option value="p.">Pasaporte</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="txt_documento">No Documento</label>
+								<input type="number" id="txt_documento" name="txt_documento" class="form-control" required="">
+							</div>
+							<div class="form-group">
+								<button type="Submit" class="btn btn-primary btn-block">Ingresar</button>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
 		</section>
 	</section>
