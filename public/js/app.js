@@ -194,53 +194,53 @@ function firstLoad(){
 				}
 
 				//validate game L
-				l_tablewin=[{userName:params.get('nombre')}];
+				l_tablewin=[{userName:params.get('nombre'), type:'bingo_L'}];
 				gameL.forEach((e, i)=>{
 					if(e.check==true){
 						l_tablewin.push(gameL[i]);
 					}
 				});
 				//validate game X
-				x_tablewin=[{userName:params.get('nombre')}];
+				x_tablewin=[{userName:params.get('nombre'), type:'bingo_X'}];
 				gameX.forEach((e, i)=>{
 					if(e.check==true){
 						x_tablewin.push(gameX[i]);
 					}
 				});
 				//validate game T
-				t_tablewin=[{userName:params.get('nombre')}];
+				t_tablewin=[{userName:params.get('nombre'), type:'bingo_T'}];
 				gameT.forEach((e, i)=>{
 					if(e.check==true){
 						t_tablewin.push(gameT[i]);
 					}
 				});
 
-				tablewin=[{userName:params.get('nombre')}];
+				tablewin=[{userName:params.get('nombre'), type:'bingo'}];
 				ballots.forEach((e, i)=>{
 					if(e.checked==true){
 						tablewin.push(ballots[i]);
 					}
 				});
 
-				if(x_tablewin.length==11){
+				if(x_tablewin.length==12){
 					$(".btnMiniBingoX").css("display", "block");
 				}else{
 					$(".btnMiniBingoX").css("display", "none");
 				}
 
-				if(l_tablewin.length==11){
+				if(l_tablewin.length==12){
 					$(".btnMiniBingoL").css("display", "block");
 				}else{
 					$(".btnMiniBingoL").css("display", "none");
 				}
 
-				if(t_tablewin.length==11){
+				if(t_tablewin.length==12){
 					$(".btnMiniBingoT").css("display", "block");
 				}else{
 					$(".btnMiniBingoT").css("display", "none");
 				}
 
-				if(tablewin.length==26){
+				if(tablewin.length==27){
 					$(".btnBingo").css("display", "block");
 				}else{
 					$(".btnBingo").css("display", "none");
@@ -268,5 +268,10 @@ function MinibingoWin(){
 function MinibingoWinX(){
 	console.log(x_tablewin);
 	x_tablewin=[];
+	swal("Mini Bingo!","Tu tabla será revisada en breve");
+}
+
+function MinibingoWinT(){
+	t_tablewin=[];
 	swal("Mini Bingo!","Tu tabla será revisada en breve");
 }
