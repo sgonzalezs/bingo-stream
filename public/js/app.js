@@ -1,17 +1,9 @@
 $(document).ready(function(){
 	firstLoad();  
-	
 });
 
 
 var params = new URLSearchParams(window.location.search);
-
-if (!params.has('nombre')) {
-    alert("Debes ingresar el usuario");
-    window.location = 'index.html';
-}else{
-	localStorage.setItem('user', params.get('nombre'));
-}
 
 var tablero = {
 	'b' : [],
@@ -85,10 +77,13 @@ function firstLoad(){
 		}
 		var bolas = bola(letra, tablero);
 		var mano = bolas.slice(0,5);
-		tabla[letra] = mano;
-		// localStorage.removeItem('table');
-		if(localStorage.getItem('table')){
-			tabla=JSON.parse(localStorage.getItem('table'));
+		tabla[letra] = mano.sort(function(a, b){return a-b});
+		
+		// localStorage.removeItem('table_'+localStorage.getItem('user'));
+		// console.log(localStorage.getItem('table_'+localStorage.getItem('user')));
+		if(localStorage.getItem('table_'+localStorage.getItem('user'))){
+			// console.log(localStorage.getItem('user'));
+			tabla=JSON.parse(localStorage.getItem('table_'+localStorage.getItem('user')));
 		}
 
 		tabla[letra].forEach((e, i)=>{
@@ -105,8 +100,8 @@ function firstLoad(){
 		});
 	}
 
-	if(!localStorage.getItem('table')){
-		localStorage.setItem('table', JSON.stringify(tabla));
+	if(!localStorage.getItem('table_'+localStorage.getItem('user'))) {
+		localStorage.setItem('table_'+localStorage.getItem('user'), JSON.stringify(tabla));
 	}
 
 	var letters=['b','i','n','g','o'];
@@ -194,53 +189,53 @@ function firstLoad(){
 				}
 
 				//validate game L
-				l_tablewin=[{userName:params.get('nombre'), type:'bingo_L'}];
+				l_tablewin=[{userName:localStorage.getItem('name'), type:'bingo_L'}];
 				gameL.forEach((e, i)=>{
 					if(e.check==true){
 						l_tablewin.push(gameL[i]);
 					}
 				});
 				//validate game X
-				x_tablewin=[{userName:params.get('nombre'), type:'bingo_X'}];
+				x_tablewin=[{userName:localStorage.getItem('name'), type:'bingo_X'}];
 				gameX.forEach((e, i)=>{
 					if(e.check==true){
 						x_tablewin.push(gameX[i]);
 					}
 				});
 				//validate game T
-				t_tablewin=[{userName:params.get('nombre'), type:'bingo_T'}];
+				t_tablewin=[{userName:localStorage.getItem('name'), type:'bingo_T'}];
 				gameT.forEach((e, i)=>{
 					if(e.check==true){
 						t_tablewin.push(gameT[i]);
 					}
 				});
 
-				tablewin=[{userName:params.get('nombre'), type:'bingo'}];
+				tablewin=[{userName:localStorage.getItem('name'), type:'bingo'}];
 				ballots.forEach((e, i)=>{
 					if(e.checked==true){
 						tablewin.push(ballots[i]);
 					}
 				});
-
-				if(x_tablewin.length==12){
+				// console.log(x_tablewin[0]["type"]);
+				if(x_tablewin.length==11){
 					$(".btnMiniBingoX").css("display", "block");
 				}else{
 					$(".btnMiniBingoX").css("display", "none");
 				}
 
-				if(l_tablewin.length==12){
+				if(l_tablewin.length==11){
 					$(".btnMiniBingoL").css("display", "block");
 				}else{
 					$(".btnMiniBingoL").css("display", "none");
 				}
 
-				if(t_tablewin.length==12){
+				if(t_tablewin.length==11){
 					$(".btnMiniBingoT").css("display", "block");
 				}else{
 					$(".btnMiniBingoT").css("display", "none");
 				}
 
-				if(tablewin.length==27){
+				if(tablewin.length==26){
 					$(".btnBingo").css("display", "block");
 				}else{
 					$(".btnBingo").css("display", "none");
@@ -256,22 +251,30 @@ function bingoWin(){
 	socket.emit("bingoWin", tablewin);
 	tablewin=[];
 	swal("Bingo! Tu tabla será revisada en breve");
-	$(".btn-success").attr("disabled", true);
+	$(".btnBingo").attr("disabled", true);
 }
 
-function MinibingoWin(){
-	console.log(l_tablewin);
+function MinibingoWinL(){
+	socket.emit("bingoWin", l_tablewin);
 	l_tablewin=[];
 	swal("Mini Bingo!","Tu tabla será revisada en breve");
+	$(".btnMiniBingoL").attr("disabled", true);
 }
 
 function MinibingoWinX(){
-	console.log(x_tablewin);
+	socket.emit("bingoWin", x_tablewin);
 	x_tablewin=[];
 	swal("Mini Bingo!","Tu tabla será revisada en breve");
+	$(".btnMiniBingoX").attr("disabled", true);
 }
 
 function MinibingoWinT(){
+	socket.emit("bingoWin", t_tablewin);
 	t_tablewin=[];
 	swal("Mini Bingo!","Tu tabla será revisada en breve");
+	$(".btnMiniBingoT").attr("disabled", true);
 }
+
+socket.on("", function(winner){
+	
+});

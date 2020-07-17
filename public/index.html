@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximun-scale=1.0, minimun-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
     
 	<title>Ingresar</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
@@ -11,15 +11,13 @@
 <body>
 	<section class="container">
 		<section class="row mt-5">
-			<div class="col-md-12 card m-auto content">
+			<div class="col-md-12 m-auto content">
 				<div class="row">
-					<div class="info col-md-7" >
-						<p>
-							Registrate para ingresar al Bingo COMFAMA y participa por espectaculares premios.
-						</p>
-					</div>
-					<div class="register col-md-5">
-						<form action="bingo.html">
+					<!-- <div class="info col-md-7" >
+						<img src="./img/bingo.png" class="img-fluid" >
+					</div> -->
+					<div class="register col-md-5 card offset-7">
+						<form id="loginForm">
 							<div class="form-group">
 								<label for="nombre">Nombre Completo</label>
 								<input type="text" class="form-control" name="nombre" id="nombre" required="" />
@@ -32,16 +30,19 @@
 								<label for="slc_documento">Tipo de Documento</label>
 								<select id="slc_documento" name="slc_documento" class="form-control" required="">
 									<option value="">Seleccione --</option>
-									<option value="c.c.">Cédula de Ciudadanía</option>
-									<option value="t.i.">Tarjeta de Identidad</option>
-									<option value="c.e.">Cédula de Extranjería</option>
-									<option value="p.">Pasaporte</option>
+									<option value="CC">Cédula de Ciudadanía</option>
+									<option value="TI">Tarjeta de Identidad</option>
+									<option value="CE">Cédula de Extranjería</option>
+									<option value="P">Pasaporte</option>
 								</select>
 							</div>
 							<div class="form-group">
 								<label for="txt_documento">No Documento</label>
 								<input type="number" id="txt_documento" name="txt_documento" class="form-control" required="">
 							</div>
+							<p class="alert alert-danger loginAlert" style="display: none;">
+								Error al ingresar
+							</p>
 							<div class="form-group">
 								<button type="Submit" class="btn btn-primary btn-block">Ingresar</button>
 							</div>
@@ -55,5 +56,6 @@
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="./js/login.js"></script>
 </body>
 </html>

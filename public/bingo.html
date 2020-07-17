@@ -1,9 +1,15 @@
-﻿<!doctype html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>Bingo!</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+    <script type="text/javascript">
+        
+        if(!localStorage.getItem('token')){
+            window.location='/';
+        }
+    </script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="lib/gunzip.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -110,7 +116,7 @@
             <div class="col-md-2 col-sm-12 col-xs-12 user-info" >
                 <p>Haz <b>clic</b> sobre el número en tu tarjetón cuando se cante la balota</p>
                 <button type="button" class="btn btn-success m-1 btnBingo" onclick="bingoWin();">Bingo!</button>
-                <button type="button" class="btn btn-success m-1 btnMiniBingoL" onclick="MinibingoWin();">Mini Bingo L!</button>
+                <button type="button" class="btn btn-success m-1 btnMiniBingoL" onclick="MinibingoWinL();">Mini Bingo L!</button>
                 <button type="button" class="btn btn-success m-1 btnMiniBingoX" onclick="MinibingoWinX();">Mini Bingo X!</button>
                 <button type="button" class="btn btn-success m-1 btnMiniBingoT" onclick="MinibingoWinT();">Mini Bingo T!</button>
             </div>

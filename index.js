@@ -1,16 +1,25 @@
+//main require
 var express = require('express');
+const mongoose=require('mongoose');
+const bodyParser=require("body-parser");
 var app = express();
 const path = require('path');
-app.use(express.static(__dirname + '/public'));
 
-app.get("/bingo", (req,res)=>{
-    res.sendFile(__dirname+'/Bingo/index.html');
-});
+app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
+app.use(require('./server/routes/user.js'));
 
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 let port = process.env.PORT || 3000;
 http.listen(port, function(){ console.log('listening on *:3000');});
+
+//mongoose connect
+mongoose.connect('mongodb://localhost:27017/db_bingo', {useNewUrlParser:true, useUnifiedTopology:true}, (err)=>{
+    if(err) throw err;
+        console.log('db connected');
+});
 
 var serverID = "undefined";
 var users=[];
