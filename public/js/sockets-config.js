@@ -27,14 +27,14 @@ function ConnectSocketIO()
     // var IP = document.getElementById("IpAddress").value;
     var IP = "https://bingo-stream.herokuapp.com/";
     socket = io.connect(IP);
-    //var socket = io.connect('http://localhost:3000');
-    // socket.on("errConn", function(data){
-    //     if(data.conn){
-    //         $("#loaderModal").modal("show");
-    //     }else{
-    //         $("#loaderModal").modal("hide");
-    //     }
-    // });
+    var socket = io.connect('https://bingo-stream.herokuapp.com/');
+    socket.on("errConn", function(data){
+        if(data.conn){
+            $("#loaderModal").modal("show");
+        }else{
+            $("#loaderModal").modal("hide");
+        }
+    });
 
     socket.on("updateTable", function(request){
         request.forEach((e, i)=>{
