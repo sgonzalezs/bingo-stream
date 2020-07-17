@@ -275,6 +275,6 @@ function MinibingoWinT(){
 	$(".btnMiniBingoT").attr("disabled", true);
 }
 
-socket.on("", function(winner){
+// socket.on("", function(winner){
 	
-});
+// });
