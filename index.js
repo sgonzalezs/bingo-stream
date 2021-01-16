@@ -16,7 +16,10 @@ let port = process.env.PORT || 3000;
 http.listen(port, function(){ console.log('listening on *:3000');});
 
 //mongoose connect
-mongoose.connect('mongodb://thiago23:Thiago23@ds137283.mlab.com:37283/bingo_db', {useNewUrlParser:true, useUnifiedTopology:true}, (err)=>{
+let local='mongodb://localhost:27017/bingo_db';
+let web='mongodb://thiago23:Thiago23@ds137283.mlab.com:37283/bingo_db';
+let web_atlas="mongodb+srv://admin_user:AdminPass@cluster0.kkgd8.mongodb.net/db_bingo?retryWrites=true&w=majority";
+mongoose.connect(web_atlas, {useNewUrlParser:true, useUnifiedTopology:true}, (err)=>{
     if(err) throw err;
         console.log('db connected');
 });

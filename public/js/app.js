@@ -122,6 +122,7 @@ function firstLoad(){
 		gameX.push({num:tabla[letters[x]][x]});
 		gameX.push({num:tabla[letters[4-x]][x]});
 
+		//gameT
 		gameT.push({num:tabla[letters[x]][0], check:false});
 		gameT.push({num:tabla[letters[2]][x], check:false});
 	}
@@ -276,5 +277,5 @@ function MinibingoWinT(){
 }
 
 // socket.on("", function(winner){
-	
+
 // });

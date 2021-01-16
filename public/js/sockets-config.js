@@ -26,7 +26,8 @@ function ConnectSocketIO()
 {
     // var IP = document.getElementById("IpAddress").value;
     var IP = "https://bingo-stream.herokuapp.com/";
-    socket = io.connect(IP);
+    var IPL = "http://localhost:3000/";
+    socket = io.connect(IPL);
     var socket = io.connect('https://bingo-stream.herokuapp.com/');
     socket.on("errConn", function(data){
         if(data.conn){
